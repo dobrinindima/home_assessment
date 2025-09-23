@@ -56,10 +56,23 @@ test('Successful login', async ({ page }) => {
 | `npm run test`        | Run all Playwright tests              |
 | `npm run test:headed` | Run tests with browser UI             |
 | `npm run codegen`     | Open Playwright Codegen               |
+| `npm run test:testomat` | Run tests with Testomat reporter (requires `TESTOMATIO`) |
+| `npm run test:import` | Import tests into Testomat project    |
 
 ## ⚙️ Continuous Integration
 
 This project uses **GitHub Actions** to automatically run tests on every push and pull request.
+
+### Testomat.io Integration
+
+- Set `TESTOMATIO` secret in CI with your Testomat API token.
+- To run with Testomat reporter locally:
+
+```bash
+TESTOMATIO=your-token npm run test:testomat
+```
+
+- From Testomat UI, you can trigger a GitHub Actions workflow (see `.github/workflows/testomat.yml`).
 
 ## 🛣️ Roadmap / TODO
 

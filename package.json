@@ -7,7 +7,10 @@
     "test": "npx playwright test",
     "test:headed": "npx playwright test --headed",
     "codegen": "npx playwright codegen",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "test:testomat": "TESTOMATIO=$TESTOMATIO npx playwright test",
+    "test:spec": "TESTOMATIO=$TESTOMATIO npx playwright test --grep=@T",
+    "test:import": "npx testomat import ./tests --type=playwright"
   },
   "repository": {
     "type": "git",
@@ -22,6 +25,7 @@
   "homepage": "https://github.com/dobrinindima/home_assessment#readme",
   "devDependencies": {
     "@playwright/test": "^1.52.0",
+    "@testomatio/reporter": "^2.3.5",
     "@types/node": "^22.15.21",
     "playwright": "^1.52.0",
     "ts-node": "^10.9.2",

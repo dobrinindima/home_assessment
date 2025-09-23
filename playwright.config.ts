@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import path from 'path';
 
 /**
  * Read environment variables from file.
@@ -23,10 +24,20 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [
-    ["html", { outputFolder: 'playwright-report', open: "never" }],
-    [require.resolve('./utils/custom-reporter.ts')],
-  ],
+  reporter: (
+    () => {
+      const reporters: any[] = [];
+      // Add Testomat reporter if TESTOMATIO token is provided
+      if (process.env.TESTOMATIO) {
+        const testomatPlaywrightAdapter = path.join(__dirname, 'node_modules', '@testomatio', 'reporter', 'lib', 'adapter', 'playwright.js');
+        reporters.push([testomatPlaywrightAdapter]);
+      }
+      // Keep existing reporters
+      reporters.push(["html", { outputFolder: 'playwright-report', open: "never" }]);
+      reporters.push([require.resolve('./utils/custom-reporter.ts')]);
+      return reporters;
+    }
+  )(),
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
