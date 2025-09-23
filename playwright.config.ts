@@ -29,7 +29,7 @@ export default defineConfig({
       const reporters: any[] = [];
       if (process.env.TESTOMATIO) {
         const testomatPlaywrightAdapter = path.join(__dirname, 'node_modules', '@testomatio', 'reporter', 'lib', 'adapter', 'playwright.js');
-        reporters.push([testomatPlaywrightAdapter]);
+        reporters.push([testomatPlaywrightAdapter, { apiKey: process.env.TESTOMATIO }]);
       }
       reporters.push(["html", { outputFolder: 'playwright-report', open: "never" }]);
       return reporters;
