@@ -27,14 +27,11 @@ export default defineConfig({
   reporter: (
     () => {
       const reporters: any[] = [];
-      // Add Testomat reporter if TESTOMATIO token is provided
       if (process.env.TESTOMATIO) {
         const testomatPlaywrightAdapter = path.join(__dirname, 'node_modules', '@testomatio', 'reporter', 'lib', 'adapter', 'playwright.js');
         reporters.push([testomatPlaywrightAdapter]);
       }
-      // Keep existing reporters
       reporters.push(["html", { outputFolder: 'playwright-report', open: "never" }]);
-      reporters.push([require.resolve('./utils/custom-reporter.ts')]);
       return reporters;
     }
   )(),
