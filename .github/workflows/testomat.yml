@@ -3,6 +3,12 @@ name: E2E Tests (Testomat)
 on:
   workflow_dispatch:
     inputs:
+      testomatio:
+        description: Testomat API token (optional; prefer secret)
+        required: false
+      run:
+        description: Testomat Run ID (optional)
+        required: false
       grep:
         description: Grep pattern (optional)
         required: false
@@ -37,6 +43,23 @@ jobs:
 
       - name: Run Playwright tests
         run: |
+          # Prefer token from event payload or workflow input; fallback to repo secret
+          if [ -n "${{ github.event.client_payload.testomatio }}" ]; then
+            export TESTOMATIO="${{ github.event.client_payload.testomatio }}";
+          elif [ -n "${{ inputs.testomatio }}" ]; then
+            export TESTOMATIO="${{ inputs.testomatio }}";
+          fi
+          if [ -z "$TESTOMATIO" ]; then
+            export TESTOMATIO="${{ secrets.TESTOMATIO }}";
+          fi
+
+          # Optional run id from payload/input (not strictly needed by reporter)
+          if [ -n "${{ github.event.client_payload.run }}" ]; then
+            export TESTOMATIO_RUN_ID="${{ github.event.client_payload.run }}";
+          elif [ -n "${{ inputs.run }}" ]; then
+            export TESTOMATIO_RUN_ID="${{ inputs.run }}";
+          fi
+
           if [ -n "${{ github.event.client_payload.grep }}" ]; then
             export GREP="${{ github.event.client_payload.grep }}";
           else
