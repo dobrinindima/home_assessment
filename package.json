@@ -6,6 +6,7 @@
   "scripts": {
     "test": "npx playwright test",
     "test:headed": "npx playwright test --headed",
+    "report:testrail": "ts-node scripts/send-testrail-report.ts",
     "codegen": "npx playwright codegen",
     "lint": "eslint . --ext .ts"
   },
